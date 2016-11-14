@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController  } from 'ionic-angular';
 
 @Component({
     selector: 'product-details',
@@ -9,6 +9,33 @@ import { NavController } from 'ionic-angular';
 export class ProductDetailsComponent {
     products: Array<{name: string}>;
 
-    constructor(public navCtrl: NavController) {       
+    constructor(public navCtrl: NavController, public alertCtrl: AlertController) {       
+    }
+
+    delete() {
+        let deletePrompt = this.alertCtrl.create({
+        title: 'Borrar',
+        message: "Estas seguro de que quieres borrar este producto?",
+        buttons: [
+            {
+            text: 'Cancelar',
+            handler: data => {
+                console.log('Cancelado');
+            }
+            },
+            {
+            text: 'Borrar',
+            handler: data => {
+                console.log('Borrado');
+                this.navCtrl.pop();
+            }
+            }
+        ]
+        });
+        deletePrompt.present();
+    }
+
+    save() {
+        this.navCtrl.pop();
     }
 }
