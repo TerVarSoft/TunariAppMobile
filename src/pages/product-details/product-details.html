@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>        
+    <ion-navbar color="secondary">        
         <ion-title>Detalles</ion-title>
         <ion-buttons end>
             <button ion-button color="royal" (click)="delete()">
@@ -15,8 +15,38 @@
     
 </ion-header>
 
-<ion-content>
-    <ion-card>
+<!--<ion-content>
+    <ion-card class="col col-center">
         <img src="http://www.nice.com/PublishingImages/Career%20images/J---HR_Page-4st-strip-green-hair%20(2).png?RenditionID=-1"/>
     </ion-card>
-</ion-content>`
+</ion-content>-->
+
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <ion-avatar item-left>
+                <img src="http://www.nice.com/PublishingImages/Career%20images/J---HR_Page-4st-strip-green-hair%20(2).png?RenditionID=-1"/>
+            </ion-avatar>
+            <h2>ME-001</h2>
+            <p>Invitaciones</p>
+        </ion-item>
+        <ion-item>
+            50 Bs.
+            <ion-note item-right>
+                Paquete
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            2 Bs.
+            <ion-note item-right>
+                Unidad
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            200 Unidades en el deposito.            
+        </ion-item>
+        <ion-item>
+            Deposito 1, estante 2, peldaño 3.            
+        </ion-item>
+    </ion-list>
+</ion-content>

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 
 import { ProductDetailsComponent } from '../product-details/product-details';
+import { ProductImageComponent } from '../product-image/product-image';
 
 @Component({
     selector: 'products-list',
@@ -10,7 +11,7 @@ import { ProductDetailsComponent } from '../product-details/product-details';
 export class ProductsListComponent {
     products: Array<{name: string}>;
 
-    constructor(public navCtrl: NavController) {
+    constructor(public navCtrl: NavController, public modalCtrl: ModalController) {
         this.products = [
             {
                 name: 'ME-001'
@@ -49,6 +50,12 @@ export class ProductsListComponent {
                 name: 'ME-007'
             }
         ];
+    }
+
+    viewImage(event, product) {
+        console.log("asdf");
+        let modal = this.modalCtrl.create(ProductImageComponent);   
+        modal.present();             
     }
 
     viewDetails(event, product) {
