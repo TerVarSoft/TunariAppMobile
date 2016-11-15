@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
 
 import { ProductDetailsComponent } from '../product-details/product-details';
+import { ProductEditComponent } from '../product-edit/product-edit';
 import { ProductImageComponent } from '../product-image/product-image';
 
 @Component({
@@ -62,5 +63,9 @@ export class ProductsListComponent {
         this.navCtrl.push(ProductDetailsComponent, {
             product: product
         });
+    }
+
+    createProduct() {
+        this.navCtrl.push(ProductEditComponent);
     }
 }

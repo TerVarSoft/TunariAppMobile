@@ -7,11 +7,7 @@
     </ion-toolbar>    
 </ion-header>
 
-
-
-
 <ion-content>
-
     <ion-list>
         <ion-item *ngFor="let product of products;" >
             <ion-avatar item-left (click)="viewImage(product)">
@@ -26,6 +22,6 @@
     </ion-list>
 
     <ion-fab bottom right>
-        <button ion-fab ><ion-icon name="add" color="light"></ion-icon></button>        
+        <button ion-fab (click)="createProduct()"><ion-icon name="add" color="light"></ion-icon></button>        
     </ion-fab>
 </ion-content>

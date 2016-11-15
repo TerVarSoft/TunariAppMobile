@@ -1,0 +1,67 @@
+<ion-header>
+    <ion-navbar color="secondary">        
+        <ion-title>Editar</ion-title>
+        <ion-buttons end>
+            <button ion-button color="royal" (click)="save()">
+                <ion-icon name="checkmark-circle" style="font-size: 35px;"></ion-icon>
+            </button>
+        </ion-buttons>      
+    </ion-navbar>    
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <ion-avatar item-left>
+                <img src="http://www.nice.com/PublishingImages/Career%20images/J---HR_Page-4st-strip-green-hair%20(2).png?RenditionID=-1"/>
+            </ion-avatar>
+            <h2>ME-001</h2>
+            <p>Invitaciones</p>
+        </ion-item>
+    </ion-list>
+    
+    <ion-segment [(ngModel)]="properties">
+        <ion-segment-button value="general">
+            General
+        </ion-segment-button>
+        <ion-segment-button value="prices">
+            Precios
+        </ion-segment-button>
+        <ion-segment-button value="locations">
+            Ubicaciones
+        </ion-segment-button>
+    </ion-segment>
+
+    <div [ngSwitch]="properties">
+        <ion-list *ngSwitchCase="'general'">
+            <ion-item>
+                <ion-label floating>Nombre</ion-label>
+                <ion-input type="text" value="ME-001"></ion-input>
+            </ion-item>     
+            <ion-item>
+                <ion-label floating>Cagetoria</ion-label>
+                <ion-input type="text" value="Invitaciones"></ion-input>
+            </ion-item>          
+        </ion-list>
+        <ion-list *ngSwitchCase="'prices'">
+            <ion-item>
+                <ion-label floating>Paquete</ion-label>
+                <ion-input type="text" value="50 Bs"></ion-input>
+            </ion-item>     
+            <ion-item>
+                <ion-label floating>Unidad</ion-label>
+                <ion-input type="text" value="4 Bs"></ion-input>
+            </ion-item>          
+        </ion-list>
+        <ion-list *ngSwitchCase="'locations'">
+            <ion-item>
+                <ion-label floating>Deposito</ion-label>
+                <ion-input type="text" value="Deposito A, Estante 3, peldaño 4"></ion-input>
+            </ion-item>     
+            <ion-item>
+                <ion-label floating>Tienda</ion-label>
+                <ion-input type="text" value="Deposito B, Estante 3, peldaño 4"></ion-input>
+            </ion-item>          
+        </ion-list>
+    </div>
+</ion-content>

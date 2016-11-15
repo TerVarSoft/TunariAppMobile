@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-
 import { NavController, AlertController  } from 'ionic-angular';
+
+import { ProductEditComponent } from '../product-edit/product-edit';
 
 @Component({
     selector: 'product-details',
@@ -35,7 +36,7 @@ export class ProductDetailsComponent {
         deletePrompt.present();
     }
 
-    save() {
-        this.navCtrl.pop();
+    edit() {
+        this.navCtrl.push(ProductEditComponent);
     }
 }
