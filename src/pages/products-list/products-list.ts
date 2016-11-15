@@ -1,65 +1,44 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, LoadingController } from 'ionic-angular';
 
 import { ProductDetailsComponent } from '../product-details/product-details';
 import { ProductEditComponent } from '../product-edit/product-edit';
 import { ProductImageComponent } from '../product-image/product-image';
+import { IProduct } from '../../models/product';
+import { ProductsService } from '../../services/products.service';
 
 @Component({
     selector: 'products-list',
-    templateUrl: 'products-list.html'
+    templateUrl: 'products-list.html',
+    providers: [ ProductsService ]
 })
 export class ProductsListComponent {
     products: Array<{name: string}>;
+    productsRes : IProduct[];
+    errorMessage: string;
 
-    constructor(public navCtrl: NavController, public modalCtrl: ModalController) {
-        this.products = [
-            {
-                name: 'ME-001'
-            },
-            {
-                name: 'ME-006'
-            },
-            {
-                name: 'ME-007'
-            },
-            {
-                name: 'ME-008'
-            },
-            {
-                name: 'ME-006'
-            },
-            {
-                name: 'ME-007'
-            },
-            {
-                name: 'ME-009'
-            },
-            {
-                name: 'ME-010'
-            },
-            {
-                name: 'ME-007'
-            },
-            {
-                name: 'ME-008'
-            },
-            {
-                name: 'ME-006'
-            },
-            {
-                name: 'ME-007'
-            }
-        ];
+    constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, private productsService: ProductsService) {        
+
+        let loader = this.loadingCtrl.create({
+            content: "Cargado los productos...",
+        });
+        loader.present();
+        this.productsService.getProducts()
+                     .subscribe(
+                       products => {
+                           this.products = products;
+                           loader.dismiss()
+                        } ,
+                       error =>  this.errorMessage = <any>error);
     }
 
-    viewImage(event, product) {
+    viewImage(product) {
         console.log("asdf");
         let modal = this.modalCtrl.create(ProductImageComponent);   
         modal.present();             
     }
 
-    viewDetails(event, product) {
+    viewDetails(product) {
         this.navCtrl.push(ProductDetailsComponent, {
             product: product
         });

@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar color="secondary">        
-        <ion-title>Editar</ion-title>
+        <ion-title>Editar {{product.name}}</ion-title>
         <ion-buttons end>
             <button ion-button color="royal" (click)="save()">
                 <ion-icon name="checkmark-circle" style="font-size: 35px;"></ion-icon>
@@ -15,8 +15,8 @@
             <ion-avatar item-left>
                 <img src="http://www.nice.com/PublishingImages/Career%20images/J---HR_Page-4st-strip-green-hair%20(2).png?RenditionID=-1"/>
             </ion-avatar>
-            <h2>ME-001</h2>
-            <p>Invitaciones</p>
+            <h2>{{product.name}}</h2>
+            <p>{{product.properties ? product.properties.type || product.category : product.category}}</p>
         </ion-item>
     </ion-list>
     
@@ -34,34 +34,30 @@
 
     <div [ngSwitch]="properties">
         <ion-list *ngSwitchCase="'general'">
-            <ion-item>
+            <ion-item *ngIf="product.name">
                 <ion-label floating>Nombre</ion-label>
-                <ion-input type="text" value="ME-001"></ion-input>
+                <ion-input type="text" [(ngModel)]="product.name"></ion-input>
             </ion-item>     
-            <ion-item>
+            <ion-item *ngIf="product.category">
                 <ion-label floating>Cagetoria</ion-label>
-                <ion-input type="text" value="Invitaciones"></ion-input>
+                <ion-input type="text" [(ngModel)]="product.category"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="product.quantity">
+                <ion-label floating>Cantidad en deposito</ion-label>
+                <ion-input type="text" [(ngModel)]="product.quantity"></ion-input>
             </ion-item>          
         </ion-list>
         <ion-list *ngSwitchCase="'prices'">
-            <ion-item>
-                <ion-label floating>Paquete</ion-label>
-                <ion-input type="text" value="50 Bs"></ion-input>
-            </ion-item>     
-            <ion-item>
-                <ion-label floating>Unidad</ion-label>
-                <ion-input type="text" value="4 Bs"></ion-input>
-            </ion-item>          
+            <ion-item *ngFor="let price of product.prices">
+                <ion-label floating>{{price.type}} [Bs]</ion-label>
+                <ion-input type="text" [(ngModel)]="price.value"></ion-input>
+            </ion-item>                 
         </ion-list>
         <ion-list *ngSwitchCase="'locations'">
-            <ion-item>
-                <ion-label floating>Deposito</ion-label>
-                <ion-input type="text" value="Deposito A, Estante 3, peldaño 4"></ion-input>
-            </ion-item>     
-            <ion-item>
-                <ion-label floating>Tienda</ion-label>
-                <ion-input type="text" value="Deposito B, Estante 3, peldaño 4"></ion-input>
-            </ion-item>          
+            <ion-item *ngFor="let location of product.locations">
+                <ion-label floating>{{location.type}}</ion-label>
+                <ion-input type="text" [(ngModel)]="locations.value"></ion-input>
+            </ion-item>            
         </ion-list>
     </div>
 </ion-content>

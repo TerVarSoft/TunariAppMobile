@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController  } from 'ionic-angular';
+import { NavController, NavParams, AlertController  } from 'ionic-angular';
 
+import { IProduct } from '../../models/product';
 import { ProductEditComponent } from '../product-edit/product-edit';
 
 @Component({
@@ -9,8 +10,10 @@ import { ProductEditComponent } from '../product-edit/product-edit';
 })
 export class ProductDetailsComponent {
     products: Array<{name: string}>;
+    product: IProduct;
 
-    constructor(public navCtrl: NavController, public alertCtrl: AlertController) {       
+    constructor(public navCtrl: NavController, private navParams: NavParams, public alertCtrl: AlertController) {      
+        this.product = navParams.get('product'); 
     }
 
     delete() {
@@ -37,6 +40,8 @@ export class ProductDetailsComponent {
     }
 
     edit() {
-        this.navCtrl.push(ProductEditComponent);
+        this.navCtrl.push(ProductEditComponent,{
+            product: this.product
+        });
     }
 }
