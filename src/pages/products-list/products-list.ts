@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ModalController, LoadingController } from 'ionic-angular';
 
 import { ProductDetailsComponent } from '../product-details/product-details';
-import { ProductEditComponent } from '../product-edit/product-edit';
+import { ProductAddComponent } from '../product-add/product-add';
 import { ProductImageComponent } from '../product-image/product-image';
 import { IProduct } from '../../models/product';
 import { ProductsService } from '../../services/products.service';
@@ -18,18 +18,24 @@ export class ProductsListComponent {
     errorMessage: string;
 
     constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, private productsService: ProductsService) {        
+        /*this.productsService.addProduct({name: "ABC3"})
+            .subscribe(
+                       product => {
+                           console.log(product);                           
+                        } ,
+                       error =>  console.log(error));*/        
 
         let loader = this.loadingCtrl.create({
             content: "Cargado los productos...",
-        });
-        loader.present();
+        });        
         this.productsService.getProducts()
                      .subscribe(
                        products => {
                            this.products = products;
-                           loader.dismiss()
+                           loader.present();                           
                         } ,
-                       error =>  this.errorMessage = <any>error);
+                       error =>  this.errorMessage = <any>error,
+                       () => loader.dismiss());
     }
 
     viewImage(product) {
@@ -44,7 +50,7 @@ export class ProductsListComponent {
         });
     }
 
-    createProduct() {
-        this.navCtrl.push(ProductEditComponent);
+    createProduct() {        
+        this.navCtrl.push(ProductAddComponent);       
     }
 }

@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-navbar color="secondary">        
+        <ion-title>Editar {{newProduct.name}}</ion-title>
+        <ion-buttons end>
+            <button ion-button color="royal" (click)="save()">
+                <ion-icon name="checkmark-circle" style="font-size: 35px;"></ion-icon>
+            </button>
+        </ion-buttons>      
+    </ion-navbar>    
+</ion-header>
+
+<ion-content>    
+    <ion-segment [(ngModel)]="properties">
+        <ion-segment-button value="general">
+            General
+        </ion-segment-button>
+        <ion-segment-button value="prices">
+            Precios
+        </ion-segment-button>
+        <ion-segment-button value="locations">
+            Ubicaciones
+        </ion-segment-button>
+    </ion-segment>
+
+    <div [ngSwitch]="properties">
+        <ion-list *ngSwitchCase="'general'">
+            <ion-item>
+                <ion-label floating>Nombre</ion-label>
+                <ion-input type="text" [(ngModel)]="newProduct.name"></ion-input>
+            </ion-item>     
+            <ion-item>
+                <ion-label floating>Cagetoria</ion-label>
+                <ion-input type="text" [(ngModel)]="newProduct.category"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Cantidad en deposito</ion-label>
+                <ion-input type="text" [(ngModel)]="newProduct.quantity"></ion-input>
+            </ion-item>          
+        </ion-list>
+        <ion-list>
+            <ion-item *ngFor="let price of newProduct.prices">
+                <ion-label floating>{{price.type}} [Bs]</ion-label>
+                <ion-input type="text" [(ngModel)]="price.value"></ion-input>
+            </ion-item>                 
+        </ion-list>
+        <ion-list>
+            <ion-item *ngFor="let location of newProduct.locations">
+                <ion-label floating>{{location.type}}</ion-label>
+                <ion-input type="text" [(ngModel)]="locations.value"></ion-input>
+            </ion-item>            
+        </ion-list>
+    </div>
+</ion-content>

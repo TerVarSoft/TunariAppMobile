@@ -10,6 +10,7 @@ import { ProductsListComponent } from '../pages/products-list/products-list';
 import { ProductDetailsComponent } from '../pages/product-details/product-details';
 import { ProductImageComponent } from '../pages/product-image/product-image';
 import { ProductEditComponent } from '../pages/product-edit/product-edit';
+import { ProductAddComponent } from '../pages/product-add/product-add';
 import { TabsPage } from '../pages/tabs/tabs';
 
 @NgModule({
@@ -22,6 +23,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     ProductDetailsComponent,
     ProductImageComponent,
     ProductEditComponent,
+    ProductAddComponent,
     TabsPage
   ],
   imports: [
@@ -39,6 +41,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     ProductDetailsComponent,
     ProductImageComponent,
     ProductEditComponent,
+    ProductAddComponent,
     TabsPage
   ],
   providers: []
