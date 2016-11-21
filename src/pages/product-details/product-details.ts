@@ -3,17 +3,20 @@ import { NavController, NavParams, AlertController  } from 'ionic-angular';
 
 import { IProduct } from '../../models/product';
 import { ProductEditComponent } from '../product-edit/product-edit';
+import { ProductsService } from '../../services/products.service';
 
 @Component({
     selector: 'product-details',
-    templateUrl: 'product-details.html'
+    templateUrl: 'product-details.html',
+    providers: [ ProductsService ]
 })
 export class ProductDetailsComponent {
     products: Array<{name: string}>;
     product: IProduct;
 
-    constructor(public navCtrl: NavController, private navParams: NavParams, public alertCtrl: AlertController) {      
-        this.product = navParams.get('product'); 
+    constructor(public navCtrl: NavController, private navParams: NavParams, 
+        public alertCtrl: AlertController, private productsService: ProductsService) {      
+        this.product = navParams.get('product');         
     }
 
     delete() {
@@ -31,7 +34,13 @@ export class ProductDetailsComponent {
             text: 'Borrar',
             handler: data => {
                 console.log('Borrado');
-                this.navCtrl.pop();
+                this.productsService.removeProduct(this.product._id)
+                    .subscribe(() => { console.log('Borrado Exitoso! xxxx'); },
+                        error =>  console.log(error),
+                        () => {
+                             console.log('Borrado Exitoso!');
+                             this.navCtrl.pop();
+                        });                
             }
             }
         ]

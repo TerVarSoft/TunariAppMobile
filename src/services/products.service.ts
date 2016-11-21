@@ -26,6 +26,14 @@ export class ProductsService {
                       .catch(this.handleError);
   }
 
+  removeProduct (productId: string): Observable<IProduct> {
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+
+      return this.http.delete(this.productsUrl + "/" + productId, options)                      
+                      .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body.data.items || { };

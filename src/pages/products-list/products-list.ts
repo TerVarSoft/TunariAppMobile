@@ -17,13 +17,7 @@ export class ProductsListComponent {
     productsRes : IProduct[];
     errorMessage: string;
 
-    constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, private productsService: ProductsService) {        
-        /*this.productsService.addProduct({name: "ABC3"})
-            .subscribe(
-                       product => {
-                           console.log(product);                           
-                        } ,
-                       error =>  console.log(error));*/        
+    constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, private productsService: ProductsService) {            
 
         let loader = this.loadingCtrl.create({
             content: "Cargado los productos...",
