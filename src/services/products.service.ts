@@ -1,27 +1,52 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { IProduct } from '../models/product';
 import { Observable }     from 'rxjs/Observable';
 import 'rxjs/Rx';
+import { URLSearchParams, Jsonp } from '@angular/http';
+import _ from "lodash";
+
+import { IProduct } from '../models/product';
 
 @Injectable()
 export class ProductsService {
   private productsUrl = 'http://servertunari.herokuapp.com/api/products';  
 
-  constructor (private http: Http) {}
+  constructor (private http: Http, private jsonp: Jsonp) {}
 
-  getProducts (): Observable<IProduct[]> {
-      console.log("hello");
+  search (tags: string, page: number) {     
+      let params: URLSearchParams = new URLSearchParams();
+
+      if(!_.isEmpty(tags)) { params.set('tags', tags) };
+      if(page) { params.set('page', page.toString()) };
+
+      params.set('queryLimit', '7');
+
+      return this.http
+                  .get(this.productsUrl, { search: params })
+                  .map(this.extractData)
+                  .catch(this.handleError);
+  }
+
+  /*getProducts (): Observable<IProduct[]> {
       return this.http.get(this.productsUrl)
                 .map(this.extractData)
                 .catch(this.handleError);
-  }
+  }*/
 
   addProduct (newProduct: IProduct): Observable<IProduct> {
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
 
       return this.http.post(this.productsUrl, newProduct, options)
+                      .map(this.extractElement)
+                      .catch(this.handleError);
+  }
+
+  updateProduct (productId: string, product: IProduct): Observable<IProduct> {
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+
+      return this.http.put(this.productsUrl + "/" + productId, product, options)
                       .map(this.extractElement)
                       .catch(this.handleError);
   }
@@ -46,7 +71,6 @@ export class ProductsService {
 
 
   private handleError (error: Response | any) {
-    console.log("asdf");
       // In a real world app, we might use a remote logging infrastructure
       let errMsg: string;
       if (error instanceof Response) {

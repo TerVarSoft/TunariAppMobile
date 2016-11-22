@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { HttpModule, JsonpModule } from '@angular/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
@@ -29,7 +30,8 @@ import { TabsPage } from '../pages/tabs/tabs';
   imports: [
     IonicModule.forRoot(MyApp),
     HttpModule,
-    JsonpModule
+    JsonpModule,
+    ReactiveFormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController  } from 'ionic-angular';
+import _ from "lodash";
 
 import { IProduct } from '../../models/product';
 import { ProductEditComponent } from '../product-edit/product-edit';
@@ -11,12 +12,22 @@ import { ProductsService } from '../../services/products.service';
     providers: [ ProductsService ]
 })
 export class ProductDetailsComponent {
-    products: Array<{name: string}>;
+    products: Array<IProduct>;
     product: IProduct;
+    showPrices: boolean;
+    showLocations: boolean;
+    showTags: boolean;
 
     constructor(public navCtrl: NavController, private navParams: NavParams, 
         public alertCtrl: AlertController, private productsService: ProductsService) {      
-        this.product = navParams.get('product');         
+        this.product = navParams.get('product');     
+        this.products = navParams.get('products');         
+    }
+
+    ionViewWillEnter() {
+        this.showPrices = _.some(this.product.prices, function(price) { return price.value});
+        this.showLocations = _.some(this.product.locations, function(location) { return location.value});
+        this.showTags = this.product.tags.length > 0;  
     }
 
     delete() {
@@ -25,20 +36,18 @@ export class ProductDetailsComponent {
         message: "Estas seguro de que quieres borrar este producto?",
         buttons: [
             {
-            text: 'Cancelar',
-            handler: data => {
-                console.log('Cancelado');
-            }
+            text: 'Cancelar',            
             },
             {
             text: 'Borrar',
             handler: data => {
-                console.log('Borrado');
+
                 this.productsService.removeProduct(this.product._id)
-                    .subscribe(() => { console.log('Borrado Exitoso! xxxx'); },
+                    .subscribe(null,
                         error =>  console.log(error),
                         () => {
                              console.log('Borrado Exitoso!');
+                             _.pull(this.products, this.product);
                              this.navCtrl.pop();
                         });                
             }

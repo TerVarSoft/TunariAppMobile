@@ -24,21 +24,31 @@
             <h2>{{product.name}}</h2>
             <p>{{product.properties ? product.properties.type || product.category : product.category}}</p>
         </ion-item>
-        <ion-item>
-            200 Unidades en el deposito.            
+        <ion-item *ngIf="product.quantity">
+            {{product.quantity}} Unidades en el deposito.            
         </ion-item>
-        <ion-list-header>Precios</ion-list-header>
-        <ion-item *ngFor="let price of product.prices">
-            {{price.value}} Bs.
-            <ion-note item-right>
-                {{price.type}}
-            </ion-note>
-        </ion-item>    
-        <ion-list-header>Ubicaciones</ion-list-header>            
-        <ion-item>
-            Deposito 1, estante 2, peldaño 3.            
-        </ion-item>
-        <ion-list-header>Etiquetas</ion-list-header>
+
+        <ion-list-header *ngIf="showPrices">Precios</ion-list-header>
+        <div *ngFor="let price of product.prices">
+            <ion-item *ngIf="price.value">
+                {{price.value}} Bs.
+                <ion-note item-right>
+                    {{price.type}}
+                </ion-note>
+            </ion-item>             
+        </div>    
+
+        <ion-list-header *ngIf="showLocations">Ubicaciones</ion-list-header>            
+        <div *ngFor="let location of product.locations">
+            <ion-item *ngIf="location.value">
+                {{location.value}}
+                <ion-note item-right>
+                    {{location.type}}
+                </ion-note>
+            </ion-item>                      
+        </div>
+
+        <ion-list-header *ngIf="showTags">Etiquetas</ion-list-header>
         <ion-item *ngFor="let tag of product.tags">
             {{tag}}
         </ion-item>

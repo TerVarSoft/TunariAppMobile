@@ -35,19 +35,34 @@
             <ion-item>
                 <ion-label floating>Cantidad en deposito</ion-label>
                 <ion-input type="text" [(ngModel)]="newProduct.quantity"></ion-input>
-            </ion-item>          
-        </ion-list>
-        <ion-list>
+            </ion-item> 
+
+            <br/>
+            <ion-list-header>Etiquetas</ion-list-header>
+            <ion-item *ngFor="let tag of newProduct.tags">
+                {{tag}}
+                <ion-icon item-right name="trash" color="secondary" (click)="removeTag(tag)"></ion-icon>
+            </ion-item> 
+            
+            <ion-row>
+                <ion-col text-center>
+                    <button ion-button (click)="addTag()">
+                        Agregar etiqueta
+                    </button>
+                </ion-col>
+            </ion-row>                   
+        </ion-list>       
+        <ion-list *ngSwitchCase="'prices'">                          
             <ion-item *ngFor="let price of newProduct.prices">
                 <ion-label floating>{{price.type}} [Bs]</ion-label>
-                <ion-input type="text" [(ngModel)]="price.value"></ion-input>
-            </ion-item>                 
+                <ion-input type="number" [(ngModel)]="price.value"></ion-input>
+            </ion-item>               
         </ion-list>
-        <ion-list>
+        <ion-list *ngSwitchCase="'locations'">
             <ion-item *ngFor="let location of newProduct.locations">
                 <ion-label floating>{{location.type}}</ion-label>
-                <ion-input type="text" [(ngModel)]="locations.value"></ion-input>
-            </ion-item>            
+                <ion-input type="text" [(ngModel)]="location.value"></ion-input>
+            </ion-item>           
         </ion-list>
     </div>
 </ion-content>

@@ -34,29 +34,44 @@
 
     <div [ngSwitch]="properties">
         <ion-list *ngSwitchCase="'general'">
-            <ion-item *ngIf="product.name">
+            <ion-item>
                 <ion-label floating>Nombre</ion-label>
                 <ion-input type="text" [(ngModel)]="product.name"></ion-input>
             </ion-item>     
-            <ion-item *ngIf="product.category">
+            <ion-item>
                 <ion-label floating>Cagetoria</ion-label>
                 <ion-input type="text" [(ngModel)]="product.category"></ion-input>
             </ion-item>
-            <ion-item *ngIf="product.quantity">
+            <ion-item>
                 <ion-label floating>Cantidad en deposito</ion-label>
                 <ion-input type="text" [(ngModel)]="product.quantity"></ion-input>
-            </ion-item>          
+            </ion-item> 
+
+            <br/>
+            <ion-list-header>Etiquetas</ion-list-header>
+            <ion-item *ngFor="let tag of product.tags">
+                {{tag}}
+                <ion-icon item-right name="trash" color="secondary" (click)="removeTag(tag)"></ion-icon>                
+            </ion-item> 
+            
+            <ion-row>
+                <ion-col text-center>
+                    <button ion-button (click)="addTag()">
+                        Agregar etiqueta
+                    </button>
+                </ion-col>
+            </ion-row>         
         </ion-list>
         <ion-list *ngSwitchCase="'prices'">
             <ion-item *ngFor="let price of product.prices">
                 <ion-label floating>{{price.type}} [Bs]</ion-label>
-                <ion-input type="text" [(ngModel)]="price.value"></ion-input>
+                <ion-input type="number" [(ngModel)]="price.value"></ion-input>
             </ion-item>                 
         </ion-list>
         <ion-list *ngSwitchCase="'locations'">
             <ion-item *ngFor="let location of product.locations">
                 <ion-label floating>{{location.type}}</ion-label>
-                <ion-input type="text" [(ngModel)]="locations.value"></ion-input>
+                <ion-input type="text" [(ngModel)]="location.value"></ion-input>
             </ion-item>            
         </ion-list>
     </div>
