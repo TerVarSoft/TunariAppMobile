@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/observable';
 import { FormControl } from '@angular/forms';
 import { NavController, ModalController, LoadingController } from 'ionic-angular';
 import _ from "lodash";
@@ -14,7 +13,7 @@ import { ProductsService } from '../../services/products.service';
     selector: 'products-list',
     templateUrl: 'products-list.html',
     styles: ['products-list.scss'],
-    providers: [ ProductsService ]
+    providers: [ ProductsService ]    
 })
 export class ProductsListComponent {
     products: Array<IProduct>;
@@ -22,6 +21,7 @@ export class ProductsListComponent {
     errorMessage: string;
     term = new FormControl();
     page: number = 1;
+    sampleBookView: boolean;
 
     constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, private productsService: ProductsService) {            
         this.term.valueChanges

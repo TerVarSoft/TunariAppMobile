@@ -9,7 +9,16 @@
     </ion-navbar>    
 </ion-header>
 
-<ion-content>    
+<ion-content>
+    <div>{{error}}</div>
+    <div class="image-container">
+        <img class="image-product" [src]="imageUrl" *ngIf="imageUrl"/>
+        <img class="image-product" *ngIf="!imageUrl" src="http://www.nice.com/PublishingImages/Career%20images/J---HR_Page-4st-strip-green-hair%20(2).png?RenditionID=-1">
+        <ion-fab class="camera-button">
+            <button (click)="takePicture()" ion-fab><ion-icon name="camera" color="light"></ion-icon></button>        
+        </ion-fab>
+    </div>
+   
     <ion-segment [(ngModel)]="properties">
         <ion-segment-button value="general">
             General
