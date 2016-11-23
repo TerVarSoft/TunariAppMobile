@@ -35,13 +35,19 @@
     <div [ngSwitch]="properties">
         <ion-list *ngSwitchCase="'general'">
             <ion-item>
+                <ion-label floating>Cagetoria</ion-label>
+                <ion-select [(ngModel)]="product.category" interface="action-sheet">
+                    <ion-option value="Libreria">Libreria</ion-option>
+                    <ion-option value="Mementos">Mementos</ion-option>
+                    <ion-option value="Matrimonios">Matrimonios</ion-option>
+                    <ion-option value="Promociones">Promociones</ion-option>
+                    <ion-option value="Bauitizos">Bauitizos</ion-option>                    
+                </ion-select>               
+            </ion-item>
+            <ion-item>
                 <ion-label floating>Nombre</ion-label>
                 <ion-input type="text" [(ngModel)]="product.name"></ion-input>
-            </ion-item>     
-            <ion-item>
-                <ion-label floating>Cagetoria</ion-label>
-                <ion-input type="text" [(ngModel)]="product.category"></ion-input>
-            </ion-item>
+            </ion-item>                 
             <ion-item>
                 <ion-label floating>Cantidad en deposito</ion-label>
                 <ion-input type="text" [(ngModel)]="product.quantity"></ion-input>

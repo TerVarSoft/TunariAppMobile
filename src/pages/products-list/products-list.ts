@@ -13,6 +13,7 @@ import { ProductsService } from '../../services/products.service';
 @Component({
     selector: 'products-list',
     templateUrl: 'products-list.html',
+    styles: ['products-list.scss'],
     providers: [ ProductsService ]
 })
 export class ProductsListComponent {

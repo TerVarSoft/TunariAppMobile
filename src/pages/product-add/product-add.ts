@@ -20,7 +20,7 @@ export class ProductAddComponent {
         
         this.newProduct = {
             name: "",
-            category: "",
+            category: "Libreria",
             prices: [
                 {
                     type:"Paquete"
@@ -65,7 +65,7 @@ export class ProductAddComponent {
         this.newProduct.name = this.newProduct.name.toUpperCase();
         this.newProduct.category = _.capitalize(this.newProduct.category);
         this.newProduct.sortTag = this.newProduct.category + this.newProduct.name;
-        
+
         if(!_.isEmpty(this.newProduct.name)) { this.newProduct.tags.push(this.newProduct.name) };
         if(!_.isEmpty(this.newProduct.category)) { this.newProduct.tags.push(this.newProduct.category) };
     }
