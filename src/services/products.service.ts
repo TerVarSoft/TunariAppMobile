@@ -20,7 +20,7 @@ export class ProductsService {
       if(!_.isEmpty(tags)) { params.set('tags', tags) };
       if(page) { params.set('page', page.toString()) };
 
-      params.set('queryLimit', '7');
+      params.set('queryLimit', '10');
 
       return this.http
                   .get(this.productsUrl, { search: params })

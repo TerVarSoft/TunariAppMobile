@@ -6,6 +6,7 @@ export interface IProduct {
     name: string;
     category: string;
     quantity?: number;
+    provider?: string;
     prices: Array<IPrice>;
     locations: Array<ILocation>;
     tags: Array<string>;

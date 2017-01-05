@@ -35,10 +35,13 @@ export class ProductsListComponent {
             );        
 
         this.term.valueChanges
-             .debounceTime(100)
-             //.distinctUntilChanged()
-             .switchMap(term => this.productsService.search(term, 1))
-             .subscribe(products => this.products = products);        
+            .debounceTime(100)
+            //.distinctUntilChanged()
+            .switchMap(term => this.productsService.search(term, 1))
+            .subscribe(products => {
+                this.page = 1;
+                this.products = products;
+            });        
         this.term.reset();              
     }    
 

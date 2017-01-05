@@ -28,13 +28,22 @@
             {{product.quantity}} Unidades en el deposito.            
         </ion-item>
         <ion-item *ngIf="product.provider">
-            {{product.provider}}            
+            {{product.provider}}      
+            <ion-note item-right>
+                Proveedor
+            </ion-note>      
         </ion-item>
         <ion-item *ngIf="product.properties && product.properties.size">
-            {{product.properties.size}}            
+            {{product.properties.size}}
+            <ion-note item-right>
+                Tamaño
+            </ion-note>              
         </ion-item>
         <ion-item *ngIf="product.properties && product.properties.genre">
-            {{product.properties.genre}}            
+            {{product.properties.genre}}
+            <ion-note item-right>
+                Genero
+            </ion-note>              
         </ion-item>
 
         <ion-list-header *ngIf="showPrices">Precios</ion-list-header>

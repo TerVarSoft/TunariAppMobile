@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar color="secondary">        
-        <ion-title>Editar {{newProduct.name}}</ion-title>
+        <ion-title>Nuevo Producto</ion-title>
         <ion-buttons end>
             <button ion-button color="royal" (click)="save()">
                 <ion-icon name="checkmark-circle" style="font-size: 35px;"></ion-icon>
@@ -33,26 +33,57 @@
 
     <div [ngSwitch]="properties">
         <ion-list *ngSwitchCase="'general'">
+            <br/>
             <ion-item>
-                <ion-label floating>Cagetoria</ion-label>
+                <ion-label>Cagetoria</ion-label>
                 <ion-select [(ngModel)]="newProduct.category" interface="action-sheet">
-                    <ion-option value="Libreria">Libreria</ion-option>
+                    <ion-option *ngFor="let category of categories" [value]="category">{{category}}</ion-option>
+                    <!--<ion-option value="Libreria">Libreria</ion-option>
                     <ion-option value="Mementos">Mementos</ion-option>
                     <ion-option value="Matrimonios">Matrimonios</ion-option>
                     <ion-option value="Promociones">Promociones</ion-option>
-                    <ion-option value="Bauitizos">Bauitizos</ion-option>                    
+                    <ion-option value="Bauitizos">Bauitizos</ion-option>     -->               
                 </ion-select>               
             </ion-item>
             <ion-item>
                 <ion-label floating>Nombre</ion-label>
                 <ion-input type="text" [(ngModel)]="newProduct.name"></ion-input>
-            </ion-item>                 
+            </ion-item> 
+            <div *ngIf="newProduct.category === 'Invitaciones'">
+                <br/>
+                <ion-item>
+                    <ion-label>Tipo</ion-label>
+                    <ion-select [(ngModel)]="newProduct.properties.type" (ionChange)="updatePropertiesOptions()" interface="action-sheet">
+                        <ion-option *ngFor="let type of invitationTypes" [value]="type">{{type}}</ion-option>          
+                    </ion-select>               
+                </ion-item>
+                <br/>
+                <ion-item>
+                    <ion-label>Tamaño</ion-label>
+                    <ion-select [(ngModel)]="newProduct.properties.size" interface="action-sheet">
+                        <ion-option *ngFor="let size of invitationSizes" [value]="size">{{size}}</ion-option>          
+                    </ion-select>               
+                </ion-item>
+                <br/>
+                <ion-item>
+                    <ion-label>Genero</ion-label>
+                    <ion-select [(ngModel)]="newProduct.properties.genre" interface="action-sheet">
+                        <ion-option *ngFor="let genre of invitationGenres" [value]="genre">{{genre}}</ion-option>          
+                    </ion-select>               
+                </ion-item>
+            </div>      
+            <br/>
+            <ion-item>
+                <ion-label>Proveedor</ion-label>
+                <ion-select [(ngModel)]="newProduct.provider" interface="action-sheet">
+                    <ion-option *ngFor="let provider of productProviders" [value]="provider">{{provider}}</ion-option>          
+                </ion-select>               
+            </ion-item>                   
             <ion-item>
                 <ion-label floating>Cantidad en deposito</ion-label>
                 <ion-input type="text" [(ngModel)]="newProduct.quantity"></ion-input>
-            </ion-item> 
-
-            <br/>
+            </ion-item>             
+            <br/>            
             <ion-list-header>Etiquetas</ion-list-header>
             <ion-item *ngFor="let tag of newProduct.tags">
                 {{tag}}
