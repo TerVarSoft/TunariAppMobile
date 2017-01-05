@@ -19,17 +19,26 @@
     <ion-list>
         <ion-item>
             <ion-avatar item-left>
-                <img src="http://www.nice.com/PublishingImages/Career%20images/J---HR_Page-4st-strip-green-hair%20(2).png?RenditionID=-1"/>
+                <img [src]="getProductImage()"/>
             </ion-avatar>
             <h2>{{product.name}}</h2>
-            <p>{{product.category}}</p>
+            <p>{{product.properties ? product.properties.type || product.category : product.category}}</p>
         </ion-item>
         <ion-item *ngIf="product.quantity">
             {{product.quantity}} Unidades en el deposito.            
         </ion-item>
+        <ion-item *ngIf="product.provider">
+            {{product.provider}}            
+        </ion-item>
+        <ion-item *ngIf="product.properties && product.properties.size">
+            {{product.properties.size}}            
+        </ion-item>
+        <ion-item *ngIf="product.properties && product.properties.genre">
+            {{product.properties.genre}}            
+        </ion-item>
 
         <ion-list-header *ngIf="showPrices">Precios</ion-list-header>
-        <div *ngFor="let price of product.prices">
+        <div *ngFor="let price of product.prices | orderby : 'value'">
             <ion-item *ngIf="price.value">
                 {{price.value}} Bs.
                 <ion-note item-right>
@@ -39,7 +48,7 @@
         </div>    
 
         <ion-list-header *ngIf="showLocations">Ubicaciones</ion-list-header>            
-        <div *ngFor="let location of product.locations">
+        <div *ngFor="let location of product.locations | orderby : 'type'">
             <ion-item *ngIf="location.value">
                 {{location.value}}
                 <ion-note item-right>
@@ -53,4 +62,7 @@
             {{tag}}
         </ion-item>
     </ion-list>
+    <div class="image-container">
+        <img class="image-product" [src]="getProductImage()"/>                
+    </div>
 </ion-content>

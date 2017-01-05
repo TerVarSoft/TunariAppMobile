@@ -16,6 +16,7 @@ import { ConfigComponent } from '../pages/config/config';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsService } from '../services/settings.service';
 import { ProductInfoService } from '../services/product-info.service';
+import { OrderByPipe } from '../pipes/orderBy';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ProductInfoService } from '../services/product-info.service';
     ProductEditComponent,
     ProductAddComponent,
     ConfigComponent,
-    TabsPage
+    TabsPage,
+    OrderByPipe
   ],
   imports: [
     IonicModule.forRoot(MyApp),

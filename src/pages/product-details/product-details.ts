@@ -5,6 +5,7 @@ import _ from "lodash";
 import { IProduct } from '../../models/product';
 import { ProductEditComponent } from '../product-edit/product-edit';
 import { ProductsService } from '../../services/products.service';
+import { ProductInfoService } from '../../services/product-info.service';
 
 @Component({
     selector: 'product-details',
@@ -19,7 +20,8 @@ export class ProductDetailsComponent {
     showTags: boolean;
 
     constructor(public navCtrl: NavController, private navParams: NavParams, 
-        public alertCtrl: AlertController, private productsService: ProductsService) {      
+        public alertCtrl: AlertController, private productsService: ProductsService,
+        private productInfo: ProductInfoService) {      
         this.product = navParams.get('product');     
         this.products = navParams.get('products');         
     }
@@ -28,6 +30,11 @@ export class ProductDetailsComponent {
         this.showPrices = _.some(this.product.prices, function(price) { return price.value});
         this.showLocations = _.some(this.product.locations, function(location) { return location.value});
         this.showTags = this.product.tags.length > 0;  
+    }
+
+    getProductImage() {
+        let imgUrl = this.productInfo.getProductImage(this.product, "-S"); 
+        return imgUrl;
     }
 
     delete() {
