@@ -12,6 +12,7 @@ import { ProductDetailsComponent } from '../pages/product-details/product-detail
 import { ProductImageComponent } from '../pages/product-image/product-image';
 import { ProductEditComponent } from '../pages/product-edit/product-edit';
 import { ProductAddComponent } from '../pages/product-add/product-add';
+import { ConfigComponent } from '../pages/config/config';
 import { TabsPage } from '../pages/tabs/tabs';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     ProductImageComponent,
     ProductEditComponent,
     ProductAddComponent,
+    ConfigComponent,
     TabsPage
   ],
   imports: [
@@ -44,6 +46,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     ProductImageComponent,
     ProductEditComponent,
     ProductAddComponent,
+    ConfigComponent,
     TabsPage
   ],
   providers: []

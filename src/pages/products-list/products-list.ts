@@ -8,22 +8,30 @@ import { ProductAddComponent } from '../product-add/product-add';
 import { ProductImageComponent } from '../product-image/product-image';
 import { IProduct } from '../../models/product';
 import { ProductsService } from '../../services/products.service';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
     selector: 'products-list',
     templateUrl: 'products-list.html',
     styles: ['products-list.scss'],
-    providers: [ ProductsService ]    
+    providers: [ ProductsService, SettingsService ]    
 })
 export class ProductsListComponent {
+    imgServer: string;
     products: Array<IProduct>;
     productsRes : IProduct[];
     errorMessage: string;
     term = new FormControl();
     page: number = 1;
-    sampleBookView: boolean;
+    sampleBookView: boolean;    
 
-    constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, private productsService: ProductsService) {            
+    constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, 
+            private productsService: ProductsService, private settingsService: SettingsService) {
+        this.settingsService.getSettings()
+            .subscribe(settings =>
+                this.imgServer = _.find(settings, {'key': 'imgServer'}).value
+            );        
+
         this.term.valueChanges
              .debounceTime(100)
              //.distinctUntilChanged()
@@ -80,5 +88,30 @@ export class ProductsListComponent {
         });
 
         return (location && location.value) ? location.value + ' / ' + location.type : "";
+    }
+
+    getProductImage(product: IProduct) {
+
+        let imgUrl = ""
+        
+        if(product && product.name && !_.isEmpty(product.category))
+        {
+            if(product.category === 'Invitaciones' && !_.isEmpty(product.properties)) {
+                imgUrl= this.imgServer + "/" +
+                    product.category + "/" +
+                    (product.properties.type || '' )+ "/" +
+                    product.name + "-S" +".jpg";
+            }
+            else {
+                imgUrl= this.imgServer + "/" +
+                    product.category + "/" +                    
+                    product.name + "-L" +".jpg";
+            }            
+        }
+        else {
+            imgUrl= "/images/tunari-logo-1.png"
+        }
+
+        return imgUrl;
     }
 }

@@ -3,21 +3,20 @@
         <ion-title>Productos</ion-title>   
         <ion-buttons end>
             <ion-toggle checked="false" [(ngModel)]="sampleBookView"></ion-toggle>
-        </ion-buttons>     
+        </ion-buttons>        
     </ion-navbar>
     <ion-toolbar color="secondary">
         <ion-searchbar placeholder="Buscar productos" [formControl]="term"></ion-searchbar>
     </ion-toolbar>    
 </ion-header>
 
-<ion-content class="background-page" > 
+<ion-content class="background-page" >
     <ion-list *ngIf="!sampleBookView">
-        <ion-item *ngFor="let product of products" >
-            <ion-avatar item-left (click)="viewImage(product)">
-                <ion-thumbnail>
-                    <img src="http://www.nice.com/PublishingImages/Career%20images/J---HR_Page-4st-strip-green-hair%20(2).png?RenditionID=-1">
-                </ion-thumbnail>
-            </ion-avatar>
+        <ion-item *ngFor="let product of products" >     
+            <ion-thumbnail item-left (click)="viewImage(product)">                
+                <img  [src]="getProductImage(product)"/>
+            </ion-thumbnail>
+         
             <div (click)="viewDetails(product)">
                 <h2>{{product.name}}</h2>
                 <h3>{{getProductPrice(product)}}</h3>
@@ -31,7 +30,7 @@
 
     <div *ngIf="sampleBookView" >
         <ion-card *ngFor="let product of products" (click)="viewImage(product)">
-            <img src="http://www.nice.com/PublishingImages/Career%20images/J---HR_Page-4st-strip-green-hair%20(2).png?RenditionID=-1"/>
+            <img [src]="getProductImage(product)"/>            
             <div class="card-title">{{product.name}}</div>
             <div class="card-subtitle">{{getProductPrice(product)}}</div>
         </ion-card>        

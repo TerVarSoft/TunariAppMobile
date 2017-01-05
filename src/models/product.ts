@@ -10,4 +10,5 @@ export interface IProduct {
     locations: Array<ILocation>;
     tags: Array<string>;
     sortTag?: string; 
+    properties?: any;
 }

@@ -9,7 +9,8 @@ import { IProduct } from '../models/product';
 
 @Injectable()
 export class ProductsService {
-  private productsUrl = 'http://servertunari.herokuapp.com/api/products';  
+  //private productsUrl = 'http://servertunari.herokuapp.com/api/products';
+  private productsUrl = 'http://192.168.1.39:8000/api/products';  
 
   constructor (private http: Http, private jsonp: Jsonp) {}
 

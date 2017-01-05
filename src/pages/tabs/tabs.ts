@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { HomePage } from '../home/home';
+import { ConfigComponent } from '../config/config';
 import { ProductsListComponent } from '../products-list/products-list';
 import { ContactPage } from '../contact/contact';
 
@@ -12,7 +13,7 @@ export class TabsPage {
   // should be each tab's root Page
   tab1Root: any = HomePage;
   wareHouse: any = ProductsListComponent;
-  tab3Root: any = ContactPage;
+  config: any = ConfigComponent;
 
   constructor() {
 
