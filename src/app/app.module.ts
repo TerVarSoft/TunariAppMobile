@@ -14,6 +14,8 @@ import { ProductEditComponent } from '../pages/product-edit/product-edit';
 import { ProductAddComponent } from '../pages/product-add/product-add';
 import { ConfigComponent } from '../pages/config/config';
 import { TabsPage } from '../pages/tabs/tabs';
+import { SettingsService } from '../services/settings.service';
+import { ProductInfoService } from '../services/product-info.service';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,6 @@ import { TabsPage } from '../pages/tabs/tabs';
     ConfigComponent,
     TabsPage
   ],
-  providers: []
+  providers: [ SettingsService, ProductInfoService ]
 })
 export class AppModule {}

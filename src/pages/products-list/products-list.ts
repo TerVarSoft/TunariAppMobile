@@ -9,6 +9,7 @@ import { ProductImageComponent } from '../product-image/product-image';
 import { IProduct } from '../../models/product';
 import { ProductsService } from '../../services/products.service';
 import { SettingsService } from '../../services/settings.service';
+import { ProductInfoService } from '../../services/product-info.service';
 
 @Component({
     selector: 'products-list',
@@ -26,7 +27,8 @@ export class ProductsListComponent {
     sampleBookView: boolean;    
 
     constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, 
-            private productsService: ProductsService, private settingsService: SettingsService) {
+            private productsService: ProductsService, private settingsService: SettingsService,
+            private productInfo: ProductInfoService) {
         this.settingsService.getSettings()
             .subscribe(settings =>
                 this.imgServer = _.find(settings, {'key': 'imgServer'}).value
@@ -54,8 +56,10 @@ export class ProductsListComponent {
                 });
     }
 
-    viewImage(product) {
-        let modal = this.modalCtrl.create(ProductImageComponent);   
+    viewImage(product) {        
+        let modal = this.modalCtrl.create(ProductImageComponent, {
+            product: product
+        });   
         modal.present();             
     }
 
@@ -91,27 +95,7 @@ export class ProductsListComponent {
     }
 
     getProductImage(product: IProduct) {
-
-        let imgUrl = ""
-        
-        if(product && product.name && !_.isEmpty(product.category))
-        {
-            if(product.category === 'Invitaciones' && !_.isEmpty(product.properties)) {
-                imgUrl= this.imgServer + "/" +
-                    product.category + "/" +
-                    (product.properties.type || '' )+ "/" +
-                    product.name + "-S" +".jpg";
-            }
-            else {
-                imgUrl= this.imgServer + "/" +
-                    product.category + "/" +                    
-                    product.name + "-L" +".jpg";
-            }            
-        }
-        else {
-            imgUrl= "/images/tunari-logo-1.png"
-        }
-
-        return imgUrl;
+        let imgUrl = this.productInfo.getProductImage(product, "-S"); 
+        return imgUrl;   
     }
 }
