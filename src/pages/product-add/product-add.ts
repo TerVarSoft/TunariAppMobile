@@ -56,8 +56,7 @@ export class ProductAddComponent {
         });                             
     }
 
-    updatePropertiesOptions() : void {
-        console.log("helloo");
+    updatePropertiesOptions() : void {        
         var config = _.cloneDeep(this.invitationsDetailsConfig);
         this.invitationDetails = config['Default'];
 
@@ -88,7 +87,7 @@ export class ProductAddComponent {
         }                         
     }
 
-    save() {       
+    save() {
         this.prepareBeforeSave();
         this.parent.onSave(this.product);            
     }    
@@ -98,7 +97,7 @@ export class ProductAddComponent {
         //this.product.category = _.capitalize(this.product.category);
         this.product.sortTag = this.product.category + this.product.name;
 
-        this.product.tags = _.difference(this.product.tags, _.intersection(this.product.tags, this.categories, 'name'));
+        this.product.tags = _.difference(this.product.tags, _.intersection(this.product.tags, this.categories));
         this.product.tags = _.difference(this.product.tags, _.intersection(this.product.tags, this.productProviders));              
         _.pull(this.product.tags, this.originalName);
         
@@ -286,8 +285,7 @@ export class ProductAddComponent {
         return imgUrl;
     }
 
-    takePicture() {
-        console.log("heloo");
+    takePicture() {        
                
 
         Camera.getPicture({destinationType: Camera.DestinationType.DATA_URL}).then((imageData) => {
