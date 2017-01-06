@@ -16,7 +16,7 @@
     <ion-list *ngIf="!sampleBookView">
         <ion-item *ngFor="let product of products" >     
             <ion-thumbnail item-left (click)="viewImage(product)">                
-                <img  [src]="getProductImage(product)"/>
+                <img  [src]="getProductImage(product)" onError="this.src='images/imgServerError.gif'"/>
             </ion-thumbnail>
          
             <div (click)="viewDetails(product)">
@@ -32,7 +32,7 @@
 
     <div *ngIf="sampleBookView" >
         <ion-card *ngFor="let product of products" (click)="viewImage(product)">
-            <img [src]="getProductImageLarge(product)"/>            
+            <img [src]="getProductImageLarge(product)" onError="this.src='images/imgServerError.gif'"/>            
             <div class="card-title">{{product.name}}</div>
             <div class="card-subtitle">{{getProductPrice(product)}}</div>
         </ion-card>        

@@ -19,7 +19,7 @@
     <ion-list>
         <ion-item>
             <ion-avatar item-left>
-                <img [src]="getProductImage()"/>
+                <img [src]="getProductImage()" onError="this.src='images/imgServerError.gif'"/>
             </ion-avatar>
             <h2>{{product.name}}</h2>
             <p>{{product.properties ? product.properties.type || product.category : product.category}}</p>
