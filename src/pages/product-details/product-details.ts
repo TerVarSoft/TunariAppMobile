@@ -43,6 +43,9 @@ export class ProductDetailsComponent {
                 error =>  console.log(error),
                 () => {
                         console.log('Actualizado Exitosamente!');
+                        let index = _.indexOf(this.products, this.product);
+                        this.products.splice(index, 1, product);
+                        this.product = product;
                         this.navCtrl.pop();
                 });
     }

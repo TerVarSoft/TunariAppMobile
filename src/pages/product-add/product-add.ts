@@ -17,7 +17,7 @@ import { ProductInfoService } from '../../services/product-info.service';
     styles: ["product-add.scss"],
     providers: [ ProductsService ]    
 })
-export class ProductAddComponent {
+export class ProductAddComponent implements OnInit {
     product: IProduct;
     products: Array<IProduct>;
     categories: Array<string>;
@@ -35,11 +35,15 @@ export class ProductAddComponent {
     originalName = "";
     parent: any;    
 
+    ngOnInit() {
+        this.product.properties = this.product.properties || {};
+    }
+
     constructor(public navCtrl: NavController, private productsService: ProductsService,
         private navParams: NavParams, private alertCtrl: AlertController, private settings: SettingsService,
         private productInfo: ProductInfoService) {
         this.products = navParams.get('products');   
-        this.product = navParams.get('product');
+        this.product = _.cloneDeep(navParams.get('product'));
         this.originalName = this.product.name;
         this.parent = navParams.get('parent');
 
