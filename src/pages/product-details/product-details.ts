@@ -37,6 +37,36 @@ export class ProductDetailsComponent {
         return imgUrl;
     }
 
+    reduceQuantity() {
+        let reduceQuantityAlert = this.alertCtrl.create({
+            title: 'Vender ' + this.product.name,
+            message: "Actualmente hay " + this.product.quantity + " Unidades.",
+            inputs: [
+                {
+                name: 'quantityToReduce',
+                type: 'number',
+                placeholder: 'Cantidad de venta'
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Cancel'
+                },
+                {
+                    text: 'OK',
+                    handler: data => {
+                        this.product.quantity -= data.quantityToReduce;
+                        this.product.quantity = this.product.quantity < 0 ? 0 : this.product.quantity;
+                        this.productsService.updateProduct(this.product._id, this.product)
+                            .subscribe(() => { },
+                                error =>  console.log(error));
+                    }
+                }
+            ]
+            });
+        reduceQuantityAlert.present();
+    }
+
     onSave(product: IProduct) {
         this.productsService.updateProduct(product._id, product)
             .subscribe(() => { },

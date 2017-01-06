@@ -5,6 +5,12 @@
             Mostrario
         </ion-label>    
     </ion-item>    
+    <ion-item>
+        <ion-toggle [(ngModel)]="isSortByQuantity" (click)="sortByQuantityClicked()"></ion-toggle>
+        <ion-label>
+            Ordenar por Cantidad
+        </ion-label>    
+    </ion-item>  
 </ion-list>
 <ion-list radio-group [(ngModel)]="selectedPriceType" (ionChange)="priceTypeSelected()">
     <ion-item *ngFor="let priceType of priceTypes">

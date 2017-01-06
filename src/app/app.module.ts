@@ -15,6 +15,7 @@ import { ProductAddComponent } from '../pages/product-add/product-add';
 import { ProductsViewOptionsComponent } from '../pages/products-view-options/products-view-options';
 import { ConfigComponent } from '../pages/config/config';
 import { TabsPage } from '../pages/tabs/tabs';
+import { ProductsService } from '../services/products.service';
 import { SettingsService } from '../services/settings.service';
 import { ProductInfoService } from '../services/product-info.service';
 import { OrderByPipe } from '../pipes/orderBy';
@@ -56,6 +57,6 @@ import { OrderByPipe } from '../pipes/orderBy';
     TabsPage,
     ProductsViewOptionsComponent
   ],
-  providers: [ SettingsService, ProductInfoService ]
+  providers: [ ProductsService, SettingsService, ProductInfoService ]
 })
 export class AppModule {}

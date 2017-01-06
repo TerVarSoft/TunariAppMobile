@@ -24,6 +24,7 @@
                 <h3>{{getProductPrice(product)}}</h3>
                 <p>{{getProductLocation(product)}}</p>
             </div>
+            <ion-note item-right>{{product.quantity}}</ion-note>
         </ion-item>
     </ion-list>
     <ion-fab bottom right *ngIf="!sampleBookView">

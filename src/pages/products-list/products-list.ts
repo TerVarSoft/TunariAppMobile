@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NavController, ModalController, LoadingController, PopoverController } from 'ionic-angular';
+import { NavController, ModalController, LoadingController, PopoverController, AlertController } from 'ionic-angular';
 import _ from "lodash";
 
 import { ProductDetailsComponent } from '../product-details/product-details';
@@ -16,7 +16,7 @@ import { ProductsViewOptionsComponent } from '../products-view-options/products-
     selector: 'products-list',
     templateUrl: 'products-list.html',
     styles: ['products-list.scss'],
-    providers: [ ProductsService, SettingsService ]    
+    providers: [ SettingsService ]    
 })
 export class ProductsListComponent {
     imgServer: string;
@@ -30,7 +30,7 @@ export class ProductsListComponent {
     selectedPriceType: string = "Unidad";    
 
     constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, 
-            private productsService: ProductsService, private settingsService: SettingsService,
+            private alertCtrl: AlertController, private productsService: ProductsService, private settingsService: SettingsService,
             private productInfo: ProductInfoService, private popoverCtrl: PopoverController) {
         this.settingsService.getSettings()
             .subscribe(settings => {
@@ -132,6 +132,11 @@ export class ProductsListComponent {
         this.sampleBookView = value;
     }
 
+    onSortByQuantityClicked() {
+        this.productsService.search(this.term.value, 1)
+            .subscribe(products => this.products = products);
+    }
+
     onSelectPriceType(selectedPriceType: string) {
         this.selectedPriceType = selectedPriceType;
     }
@@ -143,6 +148,16 @@ export class ProductsListComponent {
                     this.products.unshift(product);
                     this.navCtrl.pop();                           
                 },
-                error =>  console.log(error));    
+                error => {
+                    if(_.includes(error, "409 - Conflict")) {
+                        let alert = this.alertCtrl.create({
+                        title: 'Problemas!!',
+                        subTitle: 'El nombre ' + product.name + ' ya existe! elige otro por favor.',
+                        buttons: ['OK']
+                        });
+                        alert.present();
+                    }
+                    console.log(error);
+            });    
     }
 }
