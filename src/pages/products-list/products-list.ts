@@ -109,11 +109,17 @@ export class ProductsListComponent {
         return imgUrl;   
     }
 
+    getProductImageLarge(product: IProduct) {
+        let imgUrl = this.productInfo.getProductImage(product, "-L"); 
+        return imgUrl;   
+    }
+
     openViewOptions(ev) {
 
         let popover = this.popoverCtrl.create(ProductsViewOptionsComponent, {
             priceTypes: this.priceTypes,
             selectedPriceType: this.selectedPriceType,
+            sampleBookView: this.sampleBookView,
             parent: this
         });
 

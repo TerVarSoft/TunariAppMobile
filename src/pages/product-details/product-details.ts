@@ -80,7 +80,8 @@ export class ProductDetailsComponent {
         });*/
         this.navCtrl.push(ProductAddComponent, {
             products: this.products,
-            product: this.product
+            product: this.product,
+            parent: this
         });
     }
 }

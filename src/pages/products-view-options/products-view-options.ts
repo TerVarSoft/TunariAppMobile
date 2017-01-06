@@ -15,6 +15,7 @@ export class ProductsViewOptionsComponent implements OnInit {
         if (this.navParams.data) {
             this.priceTypes = this.navParams.data.priceTypes;
             this.parent = this.navParams.data.parent;
+            this.sampleBookView = this.navParams.data.sampleBookView;
             this.selectedPriceType = this.navParams.data.selectedPriceType;
         }
     }

@@ -28,14 +28,11 @@
     </ion-list>
     <ion-fab bottom right *ngIf="!sampleBookView">
         <button ion-fab (click)="createProduct()"><ion-icon name="add" color="light"></ion-icon></button>        
-    </ion-fab>
-    <ion-fab bottom left *ngIf="!sampleBookView">
-        <button ion-fab (click)="openSettings()"><ion-icon name="settings" color="light"></ion-icon></button>        
-    </ion-fab>
+    </ion-fab>    
 
     <div *ngIf="sampleBookView" >
         <ion-card *ngFor="let product of products" (click)="viewImage(product)">
-            <img [src]="getProductImage(product)"/>            
+            <img [src]="getProductImageLarge(product)"/>            
             <div class="card-title">{{product.name}}</div>
             <div class="card-subtitle">{{getProductPrice(product)}}</div>
         </ion-card>        
