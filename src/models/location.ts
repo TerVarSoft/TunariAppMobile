@@ -1,4 +1,4 @@
 export interface ILocation {
-    type: string;
+    type?: string;
     value?: string;
 }

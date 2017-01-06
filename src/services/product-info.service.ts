@@ -36,7 +36,7 @@ export class ProductInfoService {
             }            
         }
         else {
-            imgUrl= "/images/tunari-logo-1.png"
+            imgUrl= "images/tunari-logo-1.png"
         }
 
         return imgUrl;

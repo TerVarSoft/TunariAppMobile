@@ -3,13 +3,13 @@ import { ILocation } from './location';
 
 export interface IProduct {
     _id?: string;
-    name: string;
+    name?: string;
     category: string;
     quantity?: number;
     provider?: string;
-    prices: Array<IPrice>;
-    locations: Array<ILocation>;
-    tags: Array<string>;
+    prices?: Array<IPrice>;
+    locations?: Array<ILocation>;
+    tags?: Array<string>;
     sortTag?: string; 
     properties?: any;
 }

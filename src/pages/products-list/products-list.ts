@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NavController, ModalController, LoadingController } from 'ionic-angular';
+import { NavController, ModalController, LoadingController, PopoverController } from 'ionic-angular';
 import _ from "lodash";
 
 import { ProductDetailsComponent } from '../product-details/product-details';
@@ -10,6 +10,7 @@ import { IProduct } from '../../models/product';
 import { ProductsService } from '../../services/products.service';
 import { SettingsService } from '../../services/settings.service';
 import { ProductInfoService } from '../../services/product-info.service';
+import { ProductsViewOptionsComponent } from '../products-view-options/products-view-options';
 
 @Component({
     selector: 'products-list',
@@ -21,17 +22,21 @@ export class ProductsListComponent {
     imgServer: string;
     products: Array<IProduct>;
     productsRes : IProduct[];
+    priceTypes: Array<string>;
     errorMessage: string;
     term = new FormControl();
     page: number = 1;
-    sampleBookView: boolean;    
+    sampleBookView: boolean = false;
+    selectedPriceType: string = "Unidad";    
 
     constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, 
             private productsService: ProductsService, private settingsService: SettingsService,
-            private productInfo: ProductInfoService) {
+            private productInfo: ProductInfoService, private popoverCtrl: PopoverController) {
         this.settingsService.getSettings()
-            .subscribe(settings =>
-                this.imgServer = _.find(settings, {'key': 'imgServer'}).value
+            .subscribe(settings => {
+                    this.priceTypes = _.find(settings, {'key': 'priceTypes'}).value;
+                    this.imgServer = _.find(settings, {'key': 'imgServer'}).value;
+                }            
             );        
 
         this.term.valueChanges
@@ -75,14 +80,16 @@ export class ProductsListComponent {
 
     createProduct() {        
         this.navCtrl.push(ProductAddComponent, {
-            products: this.products
+            products: this.products,
+            product: {},
+            parent: this
         });       
     }
 
     getProductPrice(product: IProduct) {
-        let filterTag = product.category == "Libreria" ? "Unidad" : "Paquete";
+        let filterTag = this.selectedPriceType;
         let price = _.find(product.prices, function(price) {
-            return (price.type == filterTag && price.value) || price.value;
+            return (price.type == filterTag && price.value);
         });
 
         return (price && price.value) ? price.value + ' Bs. / ' + price.type : "";
@@ -100,5 +107,36 @@ export class ProductsListComponent {
     getProductImage(product: IProduct) {
         let imgUrl = this.productInfo.getProductImage(product, "-S"); 
         return imgUrl;   
+    }
+
+    openViewOptions(ev) {
+
+        let popover = this.popoverCtrl.create(ProductsViewOptionsComponent, {
+            priceTypes: this.priceTypes,
+            selectedPriceType: this.selectedPriceType,
+            parent: this
+        });
+
+        popover.present({
+            ev: ev
+        });
+    }
+
+    onChangeToSampleBookView(value: boolean) {
+        this.sampleBookView = value;
+    }
+
+    onSelectPriceType(selectedPriceType: string) {
+        this.selectedPriceType = selectedPriceType;
+    }
+
+    onSave(product: IProduct) {
+        this.productsService.addProduct(product)
+            .subscribe(
+                product => {
+                    this.products.unshift(product);
+                    this.navCtrl.pop();                           
+                },
+                error =>  console.log(error));    
     }
 }

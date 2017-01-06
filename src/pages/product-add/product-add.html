@@ -10,10 +10,8 @@
 </ion-header>
 
 <ion-content>
-    <div>{{error}}</div>
-    <div class="image-container">
-        <img class="image-product" [src]="imageUrl" *ngIf="imageUrl"/>
-        <img class="image-product" *ngIf="!imageUrl" src="http://www.nice.com/PublishingImages/Career%20images/J---HR_Page-4st-strip-green-hair%20(2).png?RenditionID=-1">
+    <div class="image-container">        
+        <img class="image-product" [src]="getProductImage()"/>  
         <ion-fab class="camera-button">
             <button (click)="takePicture()" ion-fab><ion-icon name="camera" color="light"></ion-icon></button>        
         </ion-fab>
@@ -36,7 +34,7 @@
             <br/>
             <ion-item>
                 <ion-label>Cagetoria</ion-label>
-                <ion-select [(ngModel)]="newProduct.category" interface="action-sheet">
+                <ion-select [(ngModel)]="product.category" interface="action-sheet">
                     <ion-option *ngFor="let category of categories" [value]="category">{{category}}</ion-option>
                     <!--<ion-option value="Libreria">Libreria</ion-option>
                     <ion-option value="Mementos">Mementos</ion-option>
@@ -47,27 +45,27 @@
             </ion-item>
             <ion-item>
                 <ion-label floating>Nombre</ion-label>
-                <ion-input type="text" [(ngModel)]="newProduct.name"></ion-input>
+                <ion-input type="text" [(ngModel)]="product.name"></ion-input>
             </ion-item> 
-            <div *ngIf="newProduct.category === 'Invitaciones'">
+            <div *ngIf="product.category === 'Invitaciones'">
                 <br/>
                 <ion-item>
                     <ion-label>Tipo</ion-label>
-                    <ion-select [(ngModel)]="newProduct.properties.type" (ionChange)="updatePropertiesOptions()" interface="action-sheet">
+                    <ion-select [(ngModel)]="product.properties.type" (ionChange)="updatePropertiesOptions()" interface="action-sheet">
                         <ion-option *ngFor="let type of invitationTypes" [value]="type">{{type}}</ion-option>          
                     </ion-select>               
                 </ion-item>
                 <br/>
                 <ion-item>
                     <ion-label>Tamaño</ion-label>
-                    <ion-select [(ngModel)]="newProduct.properties.size" interface="action-sheet">
+                    <ion-select [(ngModel)]="product.properties.size" interface="action-sheet">
                         <ion-option *ngFor="let size of invitationSizes" [value]="size">{{size}}</ion-option>          
                     </ion-select>               
                 </ion-item>
                 <br/>
                 <ion-item>
                     <ion-label>Genero</ion-label>
-                    <ion-select [(ngModel)]="newProduct.properties.genre" interface="action-sheet">
+                    <ion-select [(ngModel)]="product.properties.genre" interface="action-sheet">
                         <ion-option *ngFor="let genre of invitationGenres" [value]="genre">{{genre}}</ion-option>          
                     </ion-select>               
                 </ion-item>
@@ -75,17 +73,17 @@
             <br/>
             <ion-item>
                 <ion-label>Proveedor</ion-label>
-                <ion-select [(ngModel)]="newProduct.provider" interface="action-sheet">
+                <ion-select [(ngModel)]="product.provider" interface="action-sheet">
                     <ion-option *ngFor="let provider of productProviders" [value]="provider">{{provider}}</ion-option>          
                 </ion-select>               
             </ion-item>                   
             <ion-item>
                 <ion-label floating>Cantidad en deposito</ion-label>
-                <ion-input type="text" [(ngModel)]="newProduct.quantity"></ion-input>
+                <ion-input type="text" [(ngModel)]="product.quantity"></ion-input>
             </ion-item>             
             <br/>            
             <ion-list-header>Etiquetas</ion-list-header>
-            <ion-item *ngFor="let tag of newProduct.tags">
+            <ion-item *ngFor="let tag of product.tags">
                 {{tag}}
                 <ion-icon item-right name="trash" color="secondary" (click)="removeTag(tag)"></ion-icon>
             </ion-item> 
@@ -99,16 +97,30 @@
             </ion-row>                   
         </ion-list>       
         <ion-list *ngSwitchCase="'prices'">                          
-            <ion-item *ngFor="let price of newProduct.prices">
+            <!--<ion-item *ngFor="let price of product.prices">
                 <ion-label floating>{{price.type}} [Bs]</ion-label>
                 <ion-input type="number" [(ngModel)]="price.value"></ion-input>
-            </ion-item>               
+            </ion-item>   -->
+            <ion-item *ngFor="let price of product.prices">
+                {{price.value}} Bs por {{price.type}} ({{price.quantity}})
+                <ion-icon item-right name="trash" color="secondary" (click)="removePrice(price)"></ion-icon>
+            </ion-item> 
+            <ion-fab bottom center>
+                <button ion-fab (click)="addPrice()"><ion-icon name="add"></ion-icon></button>
+            </ion-fab>            
         </ion-list>
         <ion-list *ngSwitchCase="'locations'">
-            <ion-item *ngFor="let location of newProduct.locations">
+            <!--<ion-item *ngFor="let location of product.locations">
                 <ion-label floating>{{location.type}}</ion-label>
                 <ion-input type="text" [(ngModel)]="location.value"></ion-input>
-            </ion-item>           
+            </ion-item> --> 
+            <ion-item *ngFor="let location of product.locations">
+                {{location.type}} / {{location.value}}
+                <ion-icon item-right name="trash" color="secondary" (click)="removeLocation(location)"></ion-icon>
+            </ion-item> 
+            <ion-fab bottom center>
+                <button ion-fab (click)="addLocation()"><ion-icon name="add"></ion-icon></button>
+            </ion-fab>         
         </ion-list>
     </div>
 </ion-content>

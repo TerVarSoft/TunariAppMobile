@@ -3,7 +3,7 @@ import { NavController, NavParams, AlertController  } from 'ionic-angular';
 import _ from "lodash";
 
 import { IProduct } from '../../models/product';
-import { ProductEditComponent } from '../product-edit/product-edit';
+import { ProductAddComponent } from '../product-add/product-add';
 import { ProductsService } from '../../services/products.service';
 import { ProductInfoService } from '../../services/product-info.service';
 
@@ -37,6 +37,16 @@ export class ProductDetailsComponent {
         return imgUrl;
     }
 
+    onSave(product: IProduct) {
+        this.productsService.updateProduct(product._id, product)
+            .subscribe(() => { },
+                error =>  console.log(error),
+                () => {
+                        console.log('Actualizado Exitosamente!');
+                        this.navCtrl.pop();
+                });
+    }
+
     delete() {
         let deletePrompt = this.alertCtrl.create({
         title: 'Borrar',
@@ -65,7 +75,11 @@ export class ProductDetailsComponent {
     }
 
     edit() {
-        this.navCtrl.push(ProductEditComponent,{
+        /*this.navCtrl.push(ProductEditComponent,{
+            product: this.product
+        });*/
+        this.navCtrl.push(ProductAddComponent, {
+            products: this.products,
             product: this.product
         });
     }

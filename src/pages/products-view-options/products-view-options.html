@@ -1,0 +1,14 @@
+<ion-list>
+    <ion-item>
+        <ion-toggle checked="false" [(ngModel)]="sampleBookView" (click)="sampleViewClicked()"></ion-toggle>
+        <ion-label>
+            Mostrario
+        </ion-label>    
+    </ion-item>    
+</ion-list>
+<ion-list radio-group [(ngModel)]="selectedPriceType" (ionChange)="priceTypeSelected()">
+    <ion-item *ngFor="let priceType of priceTypes">
+        <ion-label>{{priceType}}</ion-label>
+        <ion-radio [value]="priceType"></ion-radio>
+    </ion-item>
+</ion-list>

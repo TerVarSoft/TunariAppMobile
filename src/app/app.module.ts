@@ -12,6 +12,7 @@ import { ProductDetailsComponent } from '../pages/product-details/product-detail
 import { ProductImageComponent } from '../pages/product-image/product-image';
 import { ProductEditComponent } from '../pages/product-edit/product-edit';
 import { ProductAddComponent } from '../pages/product-add/product-add';
+import { ProductsViewOptionsComponent } from '../pages/products-view-options/products-view-options';
 import { ConfigComponent } from '../pages/config/config';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsService } from '../services/settings.service';
@@ -31,7 +32,8 @@ import { OrderByPipe } from '../pipes/orderBy';
     ProductAddComponent,
     ConfigComponent,
     TabsPage,
-    OrderByPipe
+    OrderByPipe,
+    ProductsViewOptionsComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -51,7 +53,8 @@ import { OrderByPipe } from '../pipes/orderBy';
     ProductEditComponent,
     ProductAddComponent,
     ConfigComponent,
-    TabsPage
+    TabsPage,
+    ProductsViewOptionsComponent
   ],
   providers: [ SettingsService, ProductInfoService ]
 })

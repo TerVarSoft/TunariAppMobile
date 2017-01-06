@@ -5,8 +5,11 @@ import { Camera, Transfer } from 'ionic-native';
 import _ from "lodash";
 
 import { IProduct } from '../../models/product';
+import { IPrice } from '../../models/price';
+import { ILocation } from '../../models/location';
 import { ProductsService } from '../../services/products.service';
 import { SettingsService } from '../../services/settings.service';
+import { ProductInfoService } from '../../services/product-info.service'; 
 
 @Component({
     selector: 'product-add',
@@ -14,8 +17,8 @@ import { SettingsService } from '../../services/settings.service';
     styles: ["product-add.scss"],
     providers: [ ProductsService ]    
 })
-export class ProductAddComponent implements OnInit {
-    newProduct: IProduct;
+export class ProductAddComponent {
+    product: IProduct;
     products: Array<IProduct>;
     categories: Array<string>;
     productProviders: Array<string>;
@@ -24,50 +27,29 @@ export class ProductAddComponent implements OnInit {
     invitationDetails: any;
     invitationSizes: Array<string>;
     invitationGenres: Array<string>;
+    priceTypes: Array<string>;
+    locationTypes: Array<string>;
     properties: string = "general";
     imageUrl: string;
     error: string = "Error Message";
-
-    ngOnInit() : void {
-        this.newProduct = {
-            name: "",
-            category: "Libreria",
-            prices: [
-                {
-                    type:"Paquete"
-                },
-                {
-                    type:"Unidad"
-                },
-                {
-                    type:"Paquete Especial"
-                },
-                {
-                    type:"Unidad Especial"
-                }
-            ],
-            locations: [
-                {
-                    type:"Deposito"
-                },
-                {
-                    type:"Tienda"
-                }                
-            ],
-            properties: {},
-            tags: []
-        }
-    }
+    originalName = "";
+    parent: any;    
 
     constructor(public navCtrl: NavController, private productsService: ProductsService,
-        private navParams: NavParams, private alertCtrl: AlertController, private settings: SettingsService) {
-        this.products = navParams.get('products');    
+        private navParams: NavParams, private alertCtrl: AlertController, private settings: SettingsService,
+        private productInfo: ProductInfoService) {
+        this.products = navParams.get('products');   
+        this.product = navParams.get('product');
+        this.originalName = this.product.name;
+        this.parent = navParams.get('parent');
 
         this.settings.getSettings().subscribe(settings => {
             this.categories = _.map(_.find(settings, {'key': 'productCategories'}).value, "name");
             this.productProviders = _.find(settings, {'key': 'productProviders'}).value;
             this.invitationTypes = _.find(settings, {'key': 'invitationTypes'}).value;
             this.invitationsDetailsConfig = _.find(settings, {'key': 'invitationsDetails'}).value; 
+            this.priceTypes = _.find(settings, {'key': 'priceTypes'}).value;
+            this.locationTypes = _.find(settings, {'key': 'locationTypes'}).value;
 
             this.setDefaultValues();
             this.updatePropertiesOptions();
@@ -79,7 +61,7 @@ export class ProductAddComponent implements OnInit {
         var config = _.cloneDeep(this.invitationsDetailsConfig);
         this.invitationDetails = config['Default'];
 
-        var invitationType = this.newProduct.properties.type;        
+        var invitationType = this.product.properties.type;        
         _.mergeWith(this.invitationDetails, config[invitationType] || {}, 
             // Replace first array with second array when merging
             // Default behavior would mix the arrays, that is not what we want
@@ -95,50 +77,55 @@ export class ProductAddComponent implements OnInit {
     }
 
     setDefaultValues() {
-        this.newProduct.category = this.categories[0]; 
-        this.newProduct.properties = {};
-        this.newProduct.properties.type = this.invitationTypes[0];         
-        
+        this.product.category = this.product.category || this.categories[0]; 
+        this.product.properties = this.product.properties || {};
+        this.product.prices = this.product.prices || [];
+        this.product.locations = this.product.locations || [];
+        this.product.tags = this.product.tags || [];
+
+        if(this.product.category === "Invitaciones") {
+            this.product.properties.type = this.product.properties.type || this.invitationTypes[0];
+        }                         
     }
 
     save() {       
         this.prepareBeforeSave();
-
-        this.productsService.addProduct(this.newProduct)
-            .subscribe(
-                product => {
-                    console.log(product);
-                    this.products.unshift(product);
-                    this.navCtrl.pop();                           
-                },
-                error =>  console.log(error));        
+        this.parent.onSave(this.product);            
     }    
 
     prepareBeforeSave() {
-        this.newProduct.name = _.toUpper(this.newProduct.name);
-        this.newProduct.category = _.capitalize(this.newProduct.category);
-        this.newProduct.sortTag = this.newProduct.category + this.newProduct.name;
-        
-        this.newProduct.tags.push(this.newProduct.name);       
-        this.newProduct.tags.push(this.newProduct.category);       
-        this.newProduct.tags.push(this.newProduct.provider); 
+        this.product.name = _.toUpper(this.product.name);
+        //this.product.category = _.capitalize(this.product.category);
+        this.product.sortTag = this.product.category + this.product.name;
 
-        if(this.newProduct.category === "Invitaciones") {                                             
-            this.newProduct.tags.push(this.newProduct.properties.type);
-            this.newProduct.tags.push(this.newProduct.properties.size);
-            this.newProduct.tags.push(this.newProduct.properties.genre);
+        this.product.tags = _.difference(this.product.tags, _.intersection(this.product.tags, this.categories, 'name'));
+        this.product.tags = _.difference(this.product.tags, _.intersection(this.product.tags, this.productProviders));              
+        _.pull(this.product.tags, this.originalName);
+        
+        this.product.tags.push(this.product.name);       
+        this.product.tags.push(this.product.category);       
+        this.product.tags.push(this.product.provider); 
+
+        if(this.product.category === "Invitaciones") {      
+            this.product.tags = _.difference(this.product.tags, _.intersection(this.product.tags, this.invitationTypes));
+            this.product.tags = _.difference(this.product.tags, _.intersection(this.product.tags, this.invitationSizes));
+            this.product.tags = _.difference(this.product.tags, _.intersection(this.product.tags, this.invitationGenres));
+
+            this.product.tags.push(this.product.properties.type);
+            this.product.tags.push(this.product.properties.size);
+            this.product.tags.push(this.product.properties.genre);
 
             var invitationNumber = this.getInvitationNumber();
-            this.newProduct.sortTag = this.newProduct.properties.type + invitationNumber;
+            this.product.sortTag = this.product.properties.type + invitationNumber;
         }
 
-        this.newProduct.tags = _.filter(this.newProduct.tags, function(tag) {
+        this.product.tags = _.filter(this.product.tags, function(tag) {
             return !_.isEmpty(tag);
         });
     }
 
     getInvitationNumber() : string {
-        var nameParts = this.newProduct.name.split('-');
+        var nameParts = this.product.name.split('-');
 
         var lastElement = _.last(nameParts);
         var isNum = /^\d+$/.test(lastElement);
@@ -171,7 +158,7 @@ export class ProductAddComponent implements OnInit {
             {
             text: 'Save',
             handler: data => {
-                this.newProduct.tags.push(data.tag);
+                this.product.tags.push(data.tag);
             }
             }
         ]
@@ -180,7 +167,123 @@ export class ProductAddComponent implements OnInit {
     }
 
     removeTag(tag) {
-        _.pull(this.newProduct.tags, tag);
+        _.pull(this.product.tags, tag);
+    }
+
+    addPrice() : void {
+        let priceTypeAlert = this.alertCtrl.create();
+        priceTypeAlert.setTitle('Tipo de precio');
+
+        _.each(this.priceTypes, function(priceType) {
+            priceTypeAlert.addInput({
+                type: 'radio',
+                label: priceType,
+                value: priceType,                
+            });
+        });
+
+        priceTypeAlert.addButton('Cancel');
+        priceTypeAlert.addButton({
+            text: 'OK',
+            handler: priceType => {
+                let priceAlert = this.alertCtrl.create({
+                    title: 'Precio de ' + priceType,
+                    message: "Precio en Bolivianos y Cantidad del paquete",
+                    inputs: [
+                        {
+                            name: 'price',
+                            placeholder: 'Precio'
+                        }
+                    ],
+                    buttons: [
+                        {
+                            text: 'Cancel'
+                        },
+                        {
+                            text: 'OK',
+                            handler: result => {
+                                let newPrice: IPrice = {};
+                                newPrice.type = priceType;
+                                newPrice.value = result.price;
+                                newPrice.quantity = result.quantity || 1;
+                                this.product.prices.unshift(newPrice);
+                            }
+                        }
+                    ]
+                });
+
+                if(_.includes(priceType, "Paquete")) {
+                    priceAlert.addInput({                        
+                        name: 'quantity',
+                        placeholder: 'Cantidad del paquete'                        
+                    });
+                }
+
+                priceAlert.present();
+            }            
+        });
+        priceTypeAlert.present();        
+    }
+
+    removePrice(price) {
+        _.pull(this.product.prices, price);
+    }
+
+    addLocation() : void {
+        let locationTypeAlert = this.alertCtrl.create();
+        locationTypeAlert.setTitle('Tipo de ubicacion');
+
+        _.each(this.locationTypes, function(locationType) {
+            locationTypeAlert.addInput({
+                type: 'radio',
+                label: locationType,
+                value: locationType,                
+            });
+        });
+
+        locationTypeAlert.addButton('Cancel');
+        locationTypeAlert.addButton({
+            text: 'OK',
+            handler: locationType => {
+                let locationAlert = this.alertCtrl.create({
+                    title: 'Ubicacion en ' + locationType,
+                    message: "Ubicacion",
+                    inputs: [
+                        {
+                            name: 'location',
+                            placeholder: 'Ubicacion'
+                        }
+                    ],
+                    buttons: [
+                        {
+                            text: 'Cancel'
+                        },
+                        {
+                            text: 'OK',
+                            handler: result => {
+                                let newLocation: ILocation = {};
+                                newLocation.type = locationType;
+                                newLocation.value = result.location;
+
+                                this.product.locations.unshift(newLocation);
+                            }
+                        }
+                    ]
+                });
+
+                locationAlert.present();
+            }            
+        });
+        locationTypeAlert.present();        
+    }
+
+    removeLocation(location) {
+        _.pull(this.product.locations, location);
+    }
+
+    getProductImage() {
+        let imgUrl = this.productInfo.getProductImage(this.product, "-S"); 
+        return imgUrl;
     }
 
     takePicture() {
