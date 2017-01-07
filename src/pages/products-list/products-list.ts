@@ -38,6 +38,17 @@ export class ProductsListComponent {
                     this.imgServer = _.find(settings, {'key': 'imgServer'}).value;
                 }            
             );        
+        
+        let loading = this.loadingCtrl.create({
+            content: 'Iniciando TunariApp!!!...'
+        });
+        loading.present();
+        
+        this.productsService.search(this.term.value, 1)
+            .subscribe(products => {
+                this.products = products;
+                loading.dismiss();
+            });
 
         this.term.valueChanges
             .debounceTime(100)

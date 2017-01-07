@@ -195,6 +195,7 @@ export class ProductAddComponent implements OnInit {
                     inputs: [
                         {
                             name: 'price',
+                            type: 'number',
                             placeholder: 'Precio'
                         }
                     ],
@@ -218,6 +219,7 @@ export class ProductAddComponent implements OnInit {
                 if(_.includes(priceType, "Paquete")) {
                     priceAlert.addInput({                        
                         name: 'quantity',
+                        type: 'number',
                         placeholder: 'Cantidad del paquete'                        
                     });
                 }
@@ -285,7 +287,7 @@ export class ProductAddComponent implements OnInit {
     }
 
     getProductImage() {
-        let imgUrl = this.productInfo.getProductImage(this.product, "-S"); 
+        let imgUrl = this.productInfo.getProductImage(this.product, "-L"); 
         return imgUrl;
     }
 

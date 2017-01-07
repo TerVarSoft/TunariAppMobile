@@ -15,8 +15,8 @@
 <ion-content class="background-page" >
     <ion-list *ngIf="!sampleBookView">
         <ion-item *ngFor="let product of products" >     
-            <ion-thumbnail item-left (click)="viewImage(product)">                
-                <img  [src]="getProductImage(product)" onError="this.src='images/imgServerError.gif'"/>
+            <ion-thumbnail class="img-background" item-left (click)="viewImage(product)">                
+                <img  [src]="getProductImage(product)" onError="this.src='images/imgServerError.gif'"/>                
             </ion-thumbnail>
          
             <div (click)="viewDetails(product)">
